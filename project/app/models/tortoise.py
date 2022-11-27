@@ -1,6 +1,6 @@
 from tortoise import fields, models
-from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.contrib.postgres.fields import ArrayField
+from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 class User(models.Model):
@@ -17,8 +17,8 @@ class Recipe(models.Model):
     id = fields.data.UUIDField(pk=True)
     owner_id = fields.ForeignKeyField("models.User", related_name="recipes")
     title = fields.TextField()
-    description = fields.TextField()
-    steps_array = ArrayField(element_type="text")
+    description = fields.TextField(null=True)
+    steps = ArrayField(element_type="text")
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 

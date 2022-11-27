@@ -12,8 +12,8 @@ services:
     environment:
       - ENVIRONMENT=dev
       - TESTING=0
-      - DATABASE_URL=postgres://postgres:postgres@web-db:5432/web_dev
-      - DATABASE_TEST_URL=postgres://postgres:postgres@web-db:5432/web_test
+      - DATABASE_URL=postgres://postgres:postgres@cookbook-db:5432/cookbook_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@cookbook-db:5432/cookbook_test
     depends_on:
       - cookbook-db
 
@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     expose:
       - 5432
+    ports:
+      - 5433:5432
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
