@@ -2,10 +2,10 @@
 
 echo "Waiting for postgres..."
 
-while ! nc -z cookbook-db 5432; do
+while ! nc -z web-db 5432; do
   sleep 0.1
 done
 
-echo "CockroachDB started"
+echo "PostgreSQL started"
 
 exec "$@"
