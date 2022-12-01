@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       BigInt   @id @default(autoincrement())
+  username String   @unique
+  password String
+  name     String?
+  recipes  Recipe[]
+  profile  Profile?
+}
+
+model Profile {
+  id     BigInt  @id @default(autoincrement())
+  bio    String?
+  user   User    @relation(fields: [userId], references: [id])
+  userId BigInt  @unique
+}
+
+model Recipe {
+  id          BigInt       @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  title       String       @db.String(255)
+  desciption  String?
+  steps       String[]
+  ingredients Ingredient[]
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    BigInt
+}
+
+model Ingredient {
+  id       BigInt @id @default(autoincrement())
+  name     String @db.String(255)
+  unit     String @db.String(255)
+  quantity Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId BigInt
+}
