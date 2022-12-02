@@ -1,33 +1,26 @@
 import { Request, Response } from "express"
-import { createUser, updateUser, deleteUser, findUserByUsername } from './users.services'
-
-const createUserHandler = async (req: Request, res: Response) => {
-    const { name, username, password } = req.body
-
-    const user = await createUser(name, username, password)
-    res.status(201).json({ user })
-}
+import { updateUser, deleteUser, findUserById } from './users.services'
 
 const updateUserHandler = async (req: Request, res: Response) => {
     const { id } = req.params
-    const { name, username, password } = req.body
+    const { name, password } = req.body
 
-    const user = await updateUser(Number(id), name, username, password)
+    const user = await updateUser(id, name)
     res.status(200).json({ user })
 }
 
 const deleteUserHandler = async (req: Request, res: Response) => {
     const { id } = req.params
 
-    const user = await deleteUser(Number(id))
+    const user = await deleteUser(id)
     res.status(200).json({ user })
 }
 
 const getUserHandler = async (req: Request, res: Response) => {
-    const { username } = req.params
+    const { id } = req.params
 
-    const user = await findUserByUsername(username)
+    const user = await findUserById(id)
     res.status(200).json({ user })
 }
 
-export { createUserHandler, updateUserHandler, deleteUserHandler, getUserHandler }
+export { updateUserHandler, deleteUserHandler, getUserHandler }

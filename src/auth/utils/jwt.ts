@@ -3,13 +3,7 @@ import jwt from 'jsonwebtoken';
 import config from '../../config';
 
 const generateAccessToken = (user: User) => {
-    console.log(config)
-    try {
-        const jwtToken: any = jwt.sign(user, config.jwtAccessSecret, { expiresIn: '15m' });
-        return jwtToken;
-    } catch (error) {
-        console.error(error);
-    }
+    return jwt.sign(user, config.jwtAccessSecret, { expiresIn: '15m' });
 }
 
 const generateRefreshToken = (user: User, jti: any) => {
@@ -23,7 +17,6 @@ const generateRefreshToken = (user: User, jti: any) => {
 
 const generateTokens = (user: User, jti: any) => {
     const accessToken = generateAccessToken(user);
-    console.log(accessToken);
     const refreshToken = generateRefreshToken(user, jti);
 
     return {

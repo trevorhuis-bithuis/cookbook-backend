@@ -6,8 +6,7 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     const { authorization } = req.headers;
 
     if (!authorization) {
-        res.status(401);
-        throw new Error('🚫 Un-Authorized 🚫');
+        return res.status(401).send('🚫 Un-Authorized 🚫');
     }
 
     try {
@@ -15,11 +14,7 @@ const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
         const payload = jwt.verify(token, config.jwtAccessSecret);
         req.body.jwt = payload;
     } catch (error: any) {
-        res.status(401);
-        if (error.name === 'TokenExpiredError') {
-            throw new Error(error.name);
-        }
-        throw new Error('🚫 Un-Authorized 🚫');
+        return res.status(401).send('🚫 Un-Authorized 🚫');
     }
 
     return next();

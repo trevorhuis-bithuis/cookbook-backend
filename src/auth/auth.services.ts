@@ -30,7 +30,7 @@ const deleteRefreshToken = (id: string) => {
     });
 }
 
-const revokeTokens = (userId: number) => {
+const revokeTokens = (userId: string) => {
     return prisma.refreshToken.updateMany({
         where: {
             userId
