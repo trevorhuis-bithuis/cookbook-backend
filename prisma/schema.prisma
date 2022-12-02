@@ -8,19 +8,30 @@ datasource db {
 }
 
 model User {
-  id       BigInt   @id @default(autoincrement())
-  username String   @unique
-  password String
-  name     String?
-  recipes  Recipe[]
-  profile  Profile?
+  id            String         @id @default(uuid())
+  username      String         @unique
+  password      String
+  name          String?
+  refreshTokens RefreshToken[]
+  recipes       Recipe[]
+  profile       Profile?
+}
+
+model RefreshToken {
+  id          String   @id @unique @default(uuid())
+  hashedToken String
+  userId      String
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Profile {
   id     BigInt  @id @default(autoincrement())
   bio    String?
   user   User    @relation(fields: [userId], references: [id])
-  userId BigInt  @unique
+  userId String  @unique
 }
 
 model Recipe {
@@ -32,7 +43,7 @@ model Recipe {
   steps       String[]
   ingredients Ingredient[]
   author      User         @relation(fields: [authorId], references: [id])
-  authorId    BigInt
+  authorId    String
 }
 
 model Ingredient {
