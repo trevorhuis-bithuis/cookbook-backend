@@ -35,22 +35,32 @@ model Profile {
 }
 
 model Recipe {
-  id          BigInt       @id @default(autoincrement())
+  id          String       @id @unique @default(uuid())
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   title       String       @db.String(255)
-  desciption  String?
+  category    Category
+  favorite    Boolean      @default(false)
+  description String?
   steps       String[]
   ingredients Ingredient[]
   author      User         @relation(fields: [authorId], references: [id])
   authorId    String
 }
 
+enum Category {
+  Breakfast
+  Lunch
+  Dinner
+  Dessert
+  Snack
+}
+
 model Ingredient {
-  id       BigInt @id @default(autoincrement())
+  id       String @id @unique @default(uuid())
   name     String @db.String(255)
   unit     String @db.String(255)
   quantity Int
   recipe   Recipe @relation(fields: [recipeId], references: [id])
-  recipeId BigInt
+  recipeId String
 }

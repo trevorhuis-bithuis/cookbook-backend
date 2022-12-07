@@ -1,5 +1,9 @@
 import { Request, Response } from "express"
-import { updateRecipe, deleteRecipe, findRecipeById } from './recipes.services'
+import { updateRecipe, deleteRecipe, findRecipeById, searchRecipes, getSearchFilters } from './recipes.services'
+
+const createRecipeHandler = async (req: Request, res: Response) => {
+
+}
 
 const updateRecipeHandler = async (req: Request, res: Response) => {
     const { id } = req.params
@@ -23,4 +27,16 @@ const getRecipeHandler = async (req: Request, res: Response) => {
     res.status(200).json({ user })
 }
 
-export { updateRecipeHandler, deleteRecipeHandler, getRecipeHandler }
+const searchRecipesHandler = async (req: Request, res: Response) => {
+    const { filters } = req.body
+
+    const user = await searchRecipes(filters);
+    res.status(200).json({ user })
+}
+
+const getSearchFiltersHandler = async (req: Request, res: Response) => {
+    const searchFilters = await getSearchFilters();
+    return searchFilters;
+}
+
+export { updateRecipeHandler, deleteRecipeHandler, getRecipeHandler, searchRecipesHandler, getSearchFiltersHandler }
