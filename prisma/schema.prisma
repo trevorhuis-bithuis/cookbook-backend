@@ -60,7 +60,7 @@ model Ingredient {
   id       String @id @unique @default(uuid())
   name     String @db.String(255)
   unit     String @db.String(255)
-  quantity Int
+  quantity Float
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId String
 }

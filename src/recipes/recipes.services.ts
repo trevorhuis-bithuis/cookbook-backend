@@ -1,12 +1,15 @@
 import bcrypt from 'bcrypt';
 import { prisma } from '../app';
-import { Category } from '@prisma/client';
+import { Category, Ingredient } from '@prisma/client';
 import RecipeSearch from './types/RecipeSearch';
+import { IngredientCreate } from './types/RecipeCreate';
 
-const createRecipe = async (title: string, category: Category, favorite: boolean, description: any, steps: string[], authorId: string) => {
-    if (!Object.values(Category).includes(category)) throw new Error('Invalid category'
-        const recipe = await prisma.recipe.create({ data: { title, category, favorite, steps, authorId, description } })
-    return recipe;
+const createRecipe = async (title: string, category: Category, favorite: boolean, description: any, steps: string[], authorId: string, ingredients: IngredientCreate[]) => {
+    if (!Object.values(Category).includes(category)) throw new Error('Invalid category')
+    const recipe = await prisma.recipe.create({ data: { title, category, favorite, steps, authorId, description } })
+    const recipeIngredients = ingredients.map(ingredient => ({ ...ingredient, recipeId: recipe.id }))
+    const recipeIngredientsCreated = await prisma.ingredient.createMany({ data: recipeIngredients })
+    return { recipe, recipeIngredientsCreated };
 }
 
 const deleteRecipe = async (id: string) => {

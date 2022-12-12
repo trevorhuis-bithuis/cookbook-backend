@@ -1,8 +1,11 @@
 import { Request, Response } from "express"
-import { updateRecipe, deleteRecipe, findRecipeById, searchRecipes, getSearchFilters } from './recipes.services'
+import { updateRecipe, deleteRecipe, findRecipeById, searchRecipes, getSearchFilters, createRecipe } from './recipes.services'
 
 const createRecipeHandler = async (req: Request, res: Response) => {
+    const { title, category, favorite, description, steps, authorId, ingredients } = req.body
 
+    const user = await createRecipe(title, category, favorite, description, steps, authorId, ingredients)
+    res.status(200).json({ user })
 }
 
 const updateRecipeHandler = async (req: Request, res: Response) => {
@@ -39,4 +42,4 @@ const getSearchFiltersHandler = async (req: Request, res: Response) => {
     return searchFilters;
 }
 
-export { updateRecipeHandler, deleteRecipeHandler, getRecipeHandler, searchRecipesHandler, getSearchFiltersHandler }
+export { updateRecipeHandler, deleteRecipeHandler, getRecipeHandler, searchRecipesHandler, getSearchFiltersHandler, createRecipeHandler }
